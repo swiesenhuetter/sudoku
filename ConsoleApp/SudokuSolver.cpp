@@ -6,13 +6,9 @@
 
 
 
-SudokuSolver::SudokuSolver()
+SudokuSolver::SudokuSolver(const std::string& unsolved)
 {
-    static const std::set<int> allnum = { 1,2,3,4,5,6,7,8,9 };
-
-    for (auto& line : s_)
-        for (auto& cell : line)
-            cell.second = allnum;
+    read(unsolved);
 }
 
 std::string SudokuSolver::to_string()
@@ -29,8 +25,10 @@ std::string SudokuSolver::to_string()
     return os.str();
 }
 
-void SudokuSolver::read(std::string initial)
+void SudokuSolver::read(const std::string& initial)
 {
+    static const std::set<int> allnum = { 1,2,3,4,5,6,7,8,9 };
+
     for (unsigned int c = 0; c < 81; ++c)
     {
         auto line = c / 9;
@@ -42,7 +40,10 @@ void SudokuSolver::read(std::string initial)
             s_[line][col].second.clear();
         }
         else
+        {
             s_[line][col].first = 0;
+            s_[line][col].second = allnum;
+        }
     }
 }
 
@@ -67,11 +68,11 @@ std::set<int> SudokuSolver::in_square(unsigned int ln, unsigned int col)
 std::set<int> SudokuSolver::other_destination(unsigned int ln, unsigned int col)
 {
     std::set<int> result;
-    int sqleft = (col / 3) * 3;
-    int sqtop = (ln / 3) * 3;
-    for (int qln = sqtop; qln < sqtop + 3; ++qln)
+    auto sqleft = (col / 3) * 3;
+    auto sqtop = (ln / 3) * 3;
+    for (auto qln = sqtop; qln < sqtop + 3; ++qln)
     {
-        for (int qcol = sqleft; qcol < sqleft + 3; ++qcol)
+        for (auto qcol = sqleft; qcol < sqleft + 3; ++qcol)
         {
             if (qln != ln || qcol != col)
             {

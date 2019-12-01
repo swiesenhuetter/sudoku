@@ -9,11 +9,9 @@ class SudokuSolver
     using Cell = std::pair<int, std::set<int>>;
 
 public:
-    SudokuSolver();
+    SudokuSolver(const std::string& unsolved);
 
     std::string to_string();
-
-    void read(std::string initial);
 
     std::set<int> in_square(unsigned int ln, unsigned int col);
 
@@ -24,7 +22,7 @@ public:
     bool solve();
 
 private:
+    void read(const std::string& initial);
+
     Cell s_[9][9];
 };
-
-
