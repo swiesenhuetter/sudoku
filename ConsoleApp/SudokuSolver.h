@@ -6,7 +6,11 @@
 
 class SudokuSolver
 {
-    using Cell = std::pair<int, std::set<int>>;
+    struct Cell
+    {
+        int first{};
+		std::set<int> second{ 1,2,3,4,5,6,7,8,9 };
+    };
 
 public:
     SudokuSolver(const std::string& unsolved);

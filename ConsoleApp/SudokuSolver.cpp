@@ -27,8 +27,6 @@ std::string SudokuSolver::to_string()
 
 void SudokuSolver::read(const std::string& initial)
 {
-    static const std::set<int> allnum = { 1,2,3,4,5,6,7,8,9 };
-
     for (unsigned int c = 0; c < 81; ++c)
     {
         auto line = c / 9;
@@ -38,11 +36,6 @@ void SudokuSolver::read(const std::string& initial)
         {
             s_[line][col].first = initial[c] - 48;
             s_[line][col].second.clear();
-        }
-        else
-        {
-            s_[line][col].first = 0;
-            s_[line][col].second = allnum;
         }
     }
 }
