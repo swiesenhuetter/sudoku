@@ -9,8 +9,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: autogen
-      run: sudo ./autogen.sh
+    - name: autogen 
+      run: aclocal
+      run: autoheader
+      run: automake --add-missing 
+      run: autoconf
     - name: configure
       run: ./configure
     - name: make
