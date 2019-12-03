@@ -1,3 +1,4 @@
 AUTOMAKE_OPTIONS = foreign
-bin_PROGRAMS=sudoku
-sudoku_SOURCES=$(ConsoleApp/*.cpp)
+ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = -fpic -Wall -Wextra
+SUBDIRS = ConsoleApp
