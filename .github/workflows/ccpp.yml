@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: autogen
-      run: ./autogen.sh
+      run: sudo ./autogen.sh
     - name: configure
       run: ./configure
     - name: make
