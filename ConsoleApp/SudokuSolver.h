@@ -10,7 +10,7 @@ class SudokuSolver
     struct Cell
     {
         int solution{};
-		std::set<int> candidates{ 1,2,3,4,5,6,7,8,9 };
+        std::set<int> candidates{ 1,2,3,4,5,6,7,8,9 };
     };
 
 public:
@@ -32,9 +32,5 @@ private:
     
     using Line = std::array<Cell, 9>;
     std::array<Line, 9> s_;
-
-    constexpr size_t dim() {
-        return s_.size();
-    }
 
 };
