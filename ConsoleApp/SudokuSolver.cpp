@@ -19,7 +19,7 @@ std::string SudokuSolver::to_string()
         auto line = c / 9;
         auto col = c % 9;
         if (col == 0) os << "\n";
-        os << s_[line][col].first << " ";
+        os << s_[line][col].solution << " ";
     }
     os << "\n";
     return os.str();
@@ -34,8 +34,8 @@ void SudokuSolver::read(const std::string& initial)
 
         if (initial[c] != '-')
         {
-            s_[line][col].first = initial[c] - 48;
-            s_[line][col].second.clear();
+            s_[line][col].solution = initial[c] - 48;
+            s_[line][col].candidates.clear();
         }
     }
 }
@@ -49,9 +49,9 @@ std::set<int> SudokuSolver::in_square(unsigned int ln, unsigned int col)
     {
         for (int qcol = sqleft; qcol < sqleft + 3; ++qcol)
         {
-            if (s_[qln][qcol].first)
+            if (s_[qln][qcol].solution)
             {
-                result.insert(s_[qln][qcol].first);
+                result.insert(s_[qln][qcol].solution);
             }
         }
     }
@@ -69,7 +69,7 @@ std::set<int> SudokuSolver::other_destination(unsigned int ln, unsigned int col)
         {
             if (qln != ln || qcol != col)
             {
-                result.insert(s_[qln][qcol].second.begin(), s_[qln][qcol].second.end());
+                result.insert(s_[qln][qcol].candidates.begin(), s_[qln][qcol].candidates.end());
             }
         }
     }
@@ -81,12 +81,12 @@ std::set<int> SudokuSolver::ruled_out(unsigned int ln, unsigned int col)
     std::set<int> result;
     for (unsigned int c = 0; c < 9; ++c)
     {
-        int hor = s_[ln][c].first;
+        int hor = s_[ln][c].solution;
         if (hor)
         {
             result.insert(hor);
         }
-        int ver = s_[c][col].first;
+        int ver = s_[c][col].solution;
         if (ver)
         {
             result.insert(ver);
@@ -113,11 +113,11 @@ bool SudokuSolver::solve()
             auto line = c / 9;
             auto col = c % 9;
 
-            if (s_[line][col].first == 0)
+            if (s_[line][col].solution == 0)
             {
                 std::set<int> remaining;
                 auto eliminate = ruled_out(line, col);
-                auto& candidates = s_[line][col].second;
+                auto& candidates = s_[line][col].candidates;
                 std::set_difference(candidates.begin(),
                     candidates.end(),
                     eliminate.begin(),
@@ -131,14 +131,14 @@ bool SudokuSolver::solve()
                 }
                 else if (remaining.size() == 1)
                 {
-                    s_[line][col].first = *remaining.begin();
-                    s_[line][col].second.clear();
+                    s_[line][col].solution = *remaining.begin();
+                    s_[line][col].candidates.clear();
                 }
                 else
                 {
-                    if (remaining.size() < s_[line][col].second.size())
+                    if (remaining.size() < s_[line][col].candidates.size())
                         todo = true;
-                    s_[line][col].second = remaining;
+                    s_[line][col].candidates = remaining;
 
                     auto alternatives = other_destination(line, col);
                     for (int candidate : remaining)
@@ -146,8 +146,8 @@ bool SudokuSolver::solve()
                         auto found = std::find(alternatives.begin(), alternatives.end(), candidate);
                         if (found == alternatives.end())
                         {
-                            s_[line][col].first = candidate;
-                            s_[line][col].second.clear();
+                            s_[line][col].solution = candidate;
+                            s_[line][col].candidates.clear();
                             break;
                         }
                     }

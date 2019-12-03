@@ -2,14 +2,15 @@
 
 #include <utility>
 #include <set>
+#include <array>
 #include <string>
 
 class SudokuSolver
 {
     struct Cell
     {
-        int first{};
-		std::set<int> second{ 1,2,3,4,5,6,7,8,9 };
+        int solution{};
+		std::set<int> candidates{ 1,2,3,4,5,6,7,8,9 };
     };
 
 public:
@@ -28,5 +29,12 @@ public:
 private:
     void read(const std::string& initial);
 
-    Cell s_[9][9];
+    
+    using Line = std::array<Cell, 9>;
+    std::array<Line, 9> s_;
+
+    constexpr size_t dim() {
+        return s_.size();
+    }
+
 };
