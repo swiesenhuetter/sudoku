@@ -35,11 +35,18 @@ std::string typical {
 
 int main()
 {
-    SudokuSolver s(typical);
+    SudokuSolver s(difficult);
     std::cout << s.to_string();
     bool impossible = s.solve();
-    if (! impossible)
-        std::cout << s.to_string();
+    if (!impossible)
+    {
+        if (!s.complete())
+        {
+            std::cout << s.to_string();
+            std::cout << "make guesses?\n";
+        }
+        else std::cout << s.to_string();
+    }
     else 
         std::cout << "Can not solve this!";
 }

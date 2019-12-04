@@ -69,7 +69,8 @@ std::set<int> SudokuSolver::other_destination(unsigned int ln, unsigned int col)
         {
             if (qln != ln || qcol != col)
             {
-                result.insert(s_[qln][qcol].candidates.begin(), s_[qln][qcol].candidates.end());
+                auto& cell_candidates = s_[qln][qcol].candidates;
+                result.insert(cell_candidates.begin(), cell_candidates.end());
             }
         }
     }
@@ -100,6 +101,21 @@ std::set<int> SudokuSolver::ruled_out(unsigned int ln, unsigned int col)
     }
     return result;
 }
+
+
+bool SudokuSolver::complete()
+{
+    for (unsigned int c = 0; c < 81; ++c)
+    {
+        auto line = c / 9;
+        auto col = c % 9;
+
+        if (s_[line][col].solution == 0)
+            return false;
+    }
+    return true;
+}
+
 
 bool SudokuSolver::solve()
 {

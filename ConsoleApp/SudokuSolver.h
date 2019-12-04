@@ -26,6 +26,8 @@ public:
 
     bool solve();
 
+    bool complete();
+
 private:
     void read(const std::string& initial);
 
